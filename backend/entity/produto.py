@@ -3,7 +3,7 @@ from backend.exceptions.excecoes import NomeInvalidoError
 class Produto:
     """Entidade de domínio que valida os atributos do produto."""
 
-    def __init__(self, nome:str, preco:float, quant_estoque:int,validade:str, codigo_barras:str,categoria:str, peso:float):
+    def __init__(self, nome: str, preco: float, quant_estoque: int, validade: str, codigo_barras: str, categoria: str, peso: float):
         """Cria um Produto com validação em cada atributo."""
         self._nome = self.valida_nome(nome)
         self._preco = self.valida_preco(preco)
@@ -15,37 +15,45 @@ class Produto:
 
     def valida_nome(self, nome):
         """Valida o nome do produto."""
-        if nome == "" or nome is None:
+        if nome is None or nome.strip() == "":
             raise NomeInvalidoError("Nome não pode ser vazio")
         return nome
 
     def valida_preco(self, preco):
         """Valida o preço do produto."""
-        if preco is None:
+        if preco is None or preco == "":
             raise ValueError("Preço não pode ser vazio")
+        if preco < 0:
+            raise ValueError("Preço não pode ser negativo")
         return preco
 
     def valida_quant_estoque(self, quant_estoque):
         """Valida a quantidade em estoque."""
         if quant_estoque is None:
             raise ValueError("Quantidade em estoque não pode ser vazia")
+        if quant_estoque < 0:
+            raise ValueError("Quantidade em estoque não pode ser negativa")
         return quant_estoque
 
     def valida_validade(self, validade):
         """Valida o campo de validade do produto."""
         if validade is None:
             raise ValueError("Validade não pode ser vazia")
+        if validade < 0:
+            raise ValueError("Validade não pode ser negativa")
         return validade
 
     def valida_codigo_barras(self, codigo_barras):
         """Valida o código de barras."""
         if codigo_barras is None:
             raise ValueError("Código de barras não pode ser vazio")
+        if codigo_barras < 0:
+            raise ValueError("Código de barras não pode ser negativo")
         return codigo_barras
 
     def valida_categoria(self, categoria):
         """Valida a categoria do produto."""
-        if categoria == "" or categoria is None:
+        if categoria is None or categoria.strip() == "":
             raise ValueError("Categoria não pode ser vazia")
         return categoria
 
@@ -53,6 +61,8 @@ class Produto:
         """Valida o peso do produto."""
         if peso is None:
             raise ValueError("Peso não pode ser vazio")
+        if peso < 0:
+            raise ValueError("Peso não pode ser negativo")
         return peso
 
     @property
